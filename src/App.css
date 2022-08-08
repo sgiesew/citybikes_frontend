@@ -1,3 +1,5 @@
+@import '~antd/dist/antd.css';
+
 .App {
   text-align: center;
 }
@@ -5,6 +7,16 @@
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+#components-layout-demo-side .logo {
+  height: 32px;
+  margin: 16px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.site-layout .site-layout-background {
+  background: #fff;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -26,6 +38,13 @@
 
 .App-link {
   color: #61dafb;
+}
+
+.site-badge-count-4 .ant-badge-count {
+  margin-left: 1px;
+  color: #999;
+  background-color: #fff;
+  box-shadow: 0 0 0 1px #d9d9d9 inset;
 }
 
 @keyframes App-logo-spin {
