@@ -1,18 +1,13 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:8080/api/journey'
+const baseUrl = 'http://localhost:8080/api'
 
-export const getAll = () => {
-    const request = axios.get(baseUrl)
+export const getAllJourneys = () => {
+    const request = axios.get(baseUrl + '/journey')
     return request.then(response => response.data)
 }
   
-export const create = (newObject) => {
-    const request = axios.post(baseUrl, newObject)
-    return request.then(response => response.data)
-}
-
-export const remove = id => {
-    const request = axios.delete(`${baseUrl}/${id}`)
+export const getAllStations = () => {
+    const request = axios.get(baseUrl + '/station')
     return request.then(response => response.data)
 }
 
