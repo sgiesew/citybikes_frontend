@@ -1,35 +1,57 @@
-import React from "react"
+import React from 'react'
 import {useState, useEffect} from 'react'
-import {Layout, Table, Spin} from 'antd'
+
+import {Layout, Table, Spin, Drawer, Button} from 'antd'
 import {
-  LoadingOutlined
+  LoadingOutlined,
+  RightSquareOutlined
 } from '@ant-design/icons'
-import {getAllStations} from "./services/client"
 import './App.css'
 
-const columns = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name'
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address'
-  },
-  {
-    title: 'City',
-    dataIndex: 'city',
-    key: 'city'
-  },
-]
+import {getAllStations, getStation} from "./services/client"
 
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />
 
 function Stations() {
+  const columns = [
+    {
+      title: 'Station name',
+      dataIndex: 'name',
+      key: 'name'
+    },
+    {
+      title: 'City',
+      dataIndex: 'city',
+      key: 'city'
+    },
+    { 
+      key: 'action', 
+      title: 'More...', 
+      render: (record) => { 
+        return ( 
+          <> 
+            <RightSquareOutlined
+              onClick={() => showDetailViewFor(record.station_id)} 
+            /> 
+          </> 
+        )
+      },
+    }
+    ]
+
   const [stations, setStations] = useState([])
   const [fetching, setFetching] = useState(true)
+  const [fetchingDetail, setFetchingDetail] = useState(false)
+  const [showDetailView, setShowDetailView] = useState(false)
+  const [station, setStation] = useState([])
+
+  const showDetailViewFor = id => {
+    fetchStation(id)
+    setStation([])
+    setShowDetailView(true)
+    setFetchingDetail(true)
+    console.log(id)
+  }
 
   const fetchStations = () => {
     console.log("fetching stations data")
@@ -41,10 +63,20 @@ function Stations() {
         })
   }
   useEffect(() => {
-      console.log("useEffect called")
-      fetchStations()
+    console.log("useEffect called")
+    fetchStations()
   }, [])
 
+  const fetchStation = id => {
+    console.log("fetching station data")
+    getStation(id)
+        .then(data => {
+            console.log(data);
+            setStation(data);
+            setFetchingDetail(false)
+        })
+  }
+  const onDetailViewClose = () => setShowDetailView(false)
 
   if (fetching) {
     return <div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
@@ -52,12 +84,32 @@ function Stations() {
       </div>
   }
   return <div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
+    <Drawer
+      title={station.name}
+      width={720}
+      onClose={onDetailViewClose}
+      visible={showDetailView}
+      bodyStyle={{paddingBottom: 80}}
+      footer={
+        <div
+          style={{
+              textAlign: 'right',
+          }}
+        >
+          <Button onClick={onDetailViewClose} style={{marginRight: 8}}>
+              Close
+          </Button>
+        </div>
+      }
+      >
+        Station detail: 
+    </Drawer>
     <Table
       dataSource={stations}
       columns={columns}
       bordered
     />
-    </div>
+  </div>
   
 }
 

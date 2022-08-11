@@ -1,6 +1,5 @@
 import { Layout, Menu } from 'antd'
 import React from 'react'
-//import styles from './index.module.scss'
 import {
   EnvironmentOutlined,
   CompassOutlined,

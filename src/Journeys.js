@@ -1,10 +1,10 @@
-import React from "react"
+import React from 'react'
 import {useState, useEffect} from 'react'
 import {Layout, Table, Spin} from 'antd'
 import {
   LoadingOutlined
 } from '@ant-design/icons'
-import {getAllJourneys} from "./services/client"
+import {getJourneysPage} from "./services/client"
 import './App.css'
 
 const columns = [
@@ -35,26 +35,39 @@ const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />
 function Journeys() {
   const [journeys, setJourneys] = useState([])
   const [fetching, setFetching] = useState(true)
+  const [totalPages, setTotalPages] = useState(1)
+  const [pageLen, setPageLen] = useState(10)
+  const [curPage, setCurPage] = useState(1)
 
-  const fetchJourneys = () => {
-    console.log("fetching stations data")
-    getAllJourneys()
+  const fetchJourneysPage = (pageNr, pageLen) => {
+    console.log("fetching journeys data")
+    setFetching(true)
+    getJourneysPage(pageNr, pageLen)
         .then(data => {
             console.log(data);
-            data.map(datum => {
+            data.content.map(datum => {
               datum.distance = Number((datum.distance / 1000).toFixed(3))
               datum.duration = (datum.duration / 60).toFixed(2).replace('.', ':')
               return datum
             })
-            setJourneys(data);
+            setJourneys(data.content);
+            setTotalPages(data.totalPages)
             setFetching(false)
         })
   }
   useEffect(() => {
       console.log("useEffect called")
-      fetchJourneys()
-  }, [])
+      fetchJourneysPage(curPage - 1, pageLen)
+  }, [pageLen, curPage])
 
+  const handleTableChange = (pagination, filters, sorter) => {
+    const current = pagination.current
+    const len = pagination.pageSize
+    console.log(current, "/", len)
+    setPageLen(len)
+    setCurPage(current)
+    fetchJourneysPage(current - 1, len)
+  }
 
   if (fetching) {
     return <div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
@@ -66,6 +79,12 @@ function Journeys() {
       dataSource={journeys}
       columns={columns}
       bordered
+      onChange={handleTableChange}
+      pagination={{
+        current: curPage,
+        pageSize: pageLen,
+        total: totalPages * pageLen
+     }}
     />
     </div>
   
