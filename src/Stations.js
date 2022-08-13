@@ -1,16 +1,17 @@
 import React from 'react'
 import {useState, useEffect} from 'react'
 
-import {Layout, Table, Spin, Drawer, Button} from 'antd'
+import {Card, Table, Spin, Drawer, Button} from 'antd'
 import {
   LoadingOutlined,
-  RightSquareOutlined
+  RightSquareOutlined,
+  EnvironmentOutlined
 } from '@ant-design/icons'
 import './App.css'
 
 import {getAllStations, getStation} from "./services/client"
 
-const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />
+const spinIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />
 
 function Stations() {
   const columns = [
@@ -45,14 +46,6 @@ function Stations() {
   const [showDetailView, setShowDetailView] = useState(false)
   const [station, setStation] = useState([])
 
-  const showDetailViewFor = id => {
-    fetchStation(id)
-    setStation([])
-    setShowDetailView(true)
-    setFetchingDetail(true)
-    console.log(id)
-  }
-
   const fetchStations = () => {
     console.log("fetching stations data")
     getAllStations()
@@ -62,6 +55,7 @@ function Stations() {
             setFetching(false)
         })
   }
+  
   useEffect(() => {
     console.log("useEffect called")
     fetchStations()
@@ -76,19 +70,35 @@ function Stations() {
             setFetchingDetail(false)
         })
   }
-  const onDetailViewClose = () => setShowDetailView(false)
 
-  if (fetching) {
-    return <div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
-        <Spin indicator={antIcon} />
-      </div>
+  const showDetailViewFor = id => {
+    fetchStation(id)
+    setStation([])
+    setShowDetailView(true)
+    setFetchingDetail(true)
+    console.log(id)
   }
-  return <div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
-    <Drawer
+
+  const renderDetailView = () => {
+    if (fetchingDetail){
+      return <Drawer
+        width={640}
+        onClose={onDetailViewClose}
+        visible={showDetailView}
+        bodyStyle={{paddingBottom: 80}}
+        >
+        <div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
+          <Spin indicator={spinIcon} />
+        </div>
+      </Drawer>
+
+    }
+    return <Drawer
       title={station.name}
-      width={720}
+      width={640}
       onClose={onDetailViewClose}
       visible={showDetailView}
+      closeIcon={<EnvironmentOutlined />}
       bodyStyle={{paddingBottom: 80}}
       footer={
         <div
@@ -102,12 +112,40 @@ function Stations() {
         </div>
       }
       >
-        Station detail: 
+        <Card type="inner" title="Address">
+          {station.address}, {station.city}
+        </Card>
+        <Card
+          style={{ marginTop: 24 }}
+          type="inner"
+          title="Departures from this station"
+        >
+          {station.num_departures}
+        </Card>
+        <Card
+          style={{ marginTop: 12 }}
+          type="inner"
+          title="Returns to this station"
+        >
+          {station.num_returns}
+        </Card>
     </Drawer>
+  }
+
+  const onDetailViewClose = () => setShowDetailView(false)
+
+  if (fetching) {
+    return <div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
+        <Spin indicator={spinIcon} />
+      </div>
+  }
+  return <div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
+    {renderDetailView()}
     <Table
       dataSource={stations}
       columns={columns}
       bordered
+      rowKey="name"
     />
   </div>
   

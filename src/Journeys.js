@@ -1,6 +1,6 @@
 import React from 'react'
 import {useState, useEffect} from 'react'
-import {Layout, Table, Spin} from 'antd'
+import {Table, Spin} from 'antd'
 import {
   LoadingOutlined
 } from '@ant-design/icons'
@@ -30,7 +30,7 @@ const columns = [
   },
 ]
 
-const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />
+const spinIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />
 
 function Journeys() {
   const [journeys, setJourneys] = useState([])
@@ -55,6 +55,7 @@ function Journeys() {
             setFetching(false)
         })
   }
+  
   useEffect(() => {
       console.log("useEffect called")
       fetchJourneysPage(curPage - 1, pageLen)
@@ -66,12 +67,12 @@ function Journeys() {
     console.log(current, "/", len)
     setPageLen(len)
     setCurPage(current)
-    fetchJourneysPage(current - 1, len)
+    //fetchJourneysPage(current - 1, len)
   }
 
   if (fetching) {
     return <div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
-        <Spin indicator={antIcon} />
+        <Spin indicator={spinIcon} />
       </div>
   }
   return <div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
@@ -79,6 +80,7 @@ function Journeys() {
       dataSource={journeys}
       columns={columns}
       bordered
+      rowKey="distance"
       onChange={handleTableChange}
       pagination={{
         current: curPage,
@@ -87,7 +89,6 @@ function Journeys() {
      }}
     />
     </div>
-  
 }
 
 export default Journeys

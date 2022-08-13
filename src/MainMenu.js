@@ -1,16 +1,15 @@
-import { Layout, Menu } from 'antd'
 import React from 'react'
+import {Outlet, useLocation, Link} from 'react-router-dom'
+import {Layout, Menu} from 'antd'
 import {
   EnvironmentOutlined,
   CompassOutlined,
 } from '@ant-design/icons'
-import { Outlet, useLocation, Link } from 'react-router-dom'
 
-const { Header, Content, Sider } = Layout
+const { Content, Sider } = Layout
 
 function MainMenu () {
   const location = useLocation()
-
 
   return (
     <div>
@@ -26,6 +25,9 @@ function MainMenu () {
                 borderRight: 0,
               }}
             >
+              <Menu.Item key={'/title'}>
+                Helsinki City Bikes
+              </Menu.Item>
               <Menu.Item key={'/home'} icon={<CompassOutlined />}>
                 <Link to="/home">Journeys</Link>
               </Menu.Item>

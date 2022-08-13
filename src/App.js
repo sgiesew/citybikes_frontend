@@ -1,12 +1,11 @@
-import { Routes, Route, Navigate } from 'react-router-dom'
+import React, {Suspense} from 'react'
+import {Routes, Route, Navigate} from 'react-router-dom'
+import {unstable_HistoryRouter as HistoryRouter} from 'react-router-dom'
+import {createBrowserHistory} from 'history'
 
 import MainMenu from './MainMenu'
 import Journeys from './Journeys'
 import Stations from './Stations'
-
-import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom'
-import { createBrowserHistory } from 'history'
-import React, { Suspense } from 'react'
 
 const NotFound = () => {
   return <div> NotFound Component</div>
