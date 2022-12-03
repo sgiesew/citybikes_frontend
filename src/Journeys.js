@@ -10,23 +10,27 @@ import './App.css'
 const columns = [
   {
     title: 'From',
-    dataIndex: 'departure_station_name',
-    key: 'departure_station_name'
+    dataIndex: 'departureStationName',
+    key: 'departureStationName'
   },
   {
     title: 'To',
-    dataIndex: 'return_station_name',
-    key: 'return_station_name'
+    dataIndex: 'returnStationName',
+    key: 'returnStationName'
   },
   {
     title: 'Distance (km)',
     dataIndex: 'distance',
-    key: 'distance'
+    sorter: true,
+    key: 'distance',
+    render: element => Number((element / 1000).toFixed(3))
   },
   {
     title: 'Duration (min)',
     dataIndex: 'duration',
-    key: 'duration'
+    sorter: true,
+    key: 'duration',
+    render: element => (element / 60).toFixed(2).replace('.', ':')
   },
 ]
 
@@ -36,38 +40,50 @@ function Journeys() {
   const [journeys, setJourneys] = useState([])
   const [fetching, setFetching] = useState(true)
   const [totalPages, setTotalPages] = useState(1)
-  const [pageLen, setPageLen] = useState(10)
-  const [curPage, setCurPage] = useState(1)
+  const [pageParams, setPageParams] = useState(
+    {
+      pageLen: 10,
+      curPage: 1
+    }
+  )
 
-  const fetchJourneysPage = (pageNr, pageLen) => {
+  const fetchJourneysPage = (pageParams) => {
     console.log("fetching journeys data")
     setFetching(true)
-    getJourneysPage(pageNr, pageLen)
-        .then(data => {
-            console.log(data);
-            data.content.map(datum => {
-              datum.distance = Number((datum.distance / 1000).toFixed(3))
-              datum.duration = (datum.duration / 60).toFixed(2).replace('.', ':')
-              return datum
-            })
-            setJourneys(data.content);
-            setTotalPages(data.totalPages)
-            setFetching(false)
+    getJourneysPage(pageParams.curPage - 1, pageParams.pageLen, pageParams.sortField, pageParams.sortOrder)
+      .then(data => {
+        console.log(data.content)
+        data.content.map((element, index) => {
+          element.id = index
+          return element
         })
+        setJourneys(data.content)
+        setTotalPages(data.totalPages)
+        setFetching(false)
+      })
   }
   
   useEffect(() => {
-      console.log("useEffect called")
-      fetchJourneysPage(curPage - 1, pageLen)
-  }, [pageLen, curPage])
+    console.log("useEffect called")
+    fetchJourneysPage(pageParams)
+  }, [pageParams])
 
   const handleTableChange = (pagination, filters, sorter) => {
-    const current = pagination.current
-    const len = pagination.pageSize
-    console.log(current, "/", len)
-    setPageLen(len)
-    setCurPage(current)
-    //fetchJourneysPage(current - 1, len)
+    
+    columns.forEach(column => {
+      column.key === sorter.field ? column.sortOrder = sorter.order : column.sortOrder = null
+    })
+    if (sorter.field !== pageParams.sortField || sorter.order !== pageParams.sortOrder){
+      pagination.current = 1
+    }
+    setPageParams({
+      pageLen: pagination.pageSize,
+      curPage: pagination.current,
+      sortField: sorter.field,
+      sortOrder: sorter.order
+    })
+
+    console.log(pageParams)
   }
 
   if (fetching) {
@@ -80,13 +96,13 @@ function Journeys() {
       dataSource={journeys}
       columns={columns}
       bordered
-      rowKey="distance"
+      rowKey="id"
       onChange={handleTableChange}
       pagination={{
-        current: curPage,
-        pageSize: pageLen,
-        total: totalPages * pageLen
-     }}
+        current: pageParams.curPage,
+        pageSize: pageParams.pageLen,
+        total: totalPages * pageParams.pageLen
+      }}
     />
     </div>
 }

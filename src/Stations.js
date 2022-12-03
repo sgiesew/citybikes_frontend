@@ -9,7 +9,7 @@ import {
 } from '@ant-design/icons'
 import './App.css'
 
-import {getAllStations, getStation} from "./services/client"
+import {getStationsPage, getStation} from "./services/client"
 
 const spinIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />
 
@@ -38,28 +38,52 @@ function Stations() {
         )
       },
     }
-    ]
+  ]
 
   const [stations, setStations] = useState([])
   const [fetching, setFetching] = useState(true)
+  const [totalPages, setTotalPages] = useState(1)
+  const [pageParams, setPageParams] = useState(
+    {
+      pageLen: 10,
+      curPage: 1
+    }
+  )
+
   const [fetchingDetail, setFetchingDetail] = useState(false)
   const [showDetailView, setShowDetailView] = useState(false)
   const [station, setStation] = useState([])
 
-  const fetchStations = () => {
+  const fetchStationsPage = (pageParams) => {
     console.log("fetching stations data")
-    getAllStations()
-        .then(data => {
-            console.log(data);
-            setStations(data);
-            setFetching(false)
+    setFetching(true)
+    getStationsPage(pageParams.curPage - 1, pageParams.pageLen, pageParams.sortField, pageParams.sortOrder)
+      .then(data => {
+        console.log(data.content)
+        data.content.map((element, index) => {
+          element.id = index
+          return element
         })
+        setStations(data.content)
+        setTotalPages(data.totalPages)
+        setFetching(false)
+      })
   }
   
   useEffect(() => {
     console.log("useEffect called")
-    fetchStations()
-  }, [])
+    fetchStationsPage(pageParams)
+  }, [pageParams])
+
+  const handleTableChange = (pagination, filters, sorter) => {
+    
+    setPageParams({
+      pageLen: pagination.pageSize,
+      curPage: pagination.current
+    })
+
+    console.log(pageParams)
+  }
 
   const fetchStation = id => {
     console.log("fetching station data")
@@ -145,7 +169,13 @@ function Stations() {
       dataSource={stations}
       columns={columns}
       bordered
-      rowKey="name"
+      rowKey="id"
+      onChange={handleTableChange}
+      pagination={{
+        current: pageParams.curPage,
+        pageSize: pageParams.pageLen,
+        total: totalPages * pageParams.pageLen
+      }}
     />
   </div>
   
