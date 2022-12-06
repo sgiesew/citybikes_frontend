@@ -7,15 +7,27 @@ import {
 import {getJourneysPage} from "./services/client"
 import './App.css'
 
+const spinIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />
+
 const columns = [
   {
     title: 'From',
     dataIndex: 'departureStationName',
+    filters: [
+      { text: 'Metro station', value: 'metro' },
+      { text: 'Train station', value: 'train' },
+    ],
+    filterMultiple: false,
     key: 'departureStationName'
   },
   {
     title: 'To',
     dataIndex: 'returnStationName',
+    filters: [
+      { text: 'Metro station', value: 'metro' },
+      { text: 'Train station', value: 'train' },
+    ],
+    filterMultiple: false,
     key: 'returnStationName'
   },
   {
@@ -34,9 +46,8 @@ const columns = [
   },
 ]
 
-const spinIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />
-
 function Journeys() {
+
   const [journeys, setJourneys] = useState([])
   const [fetching, setFetching] = useState(true)
   const [totalPages, setTotalPages] = useState(1)
@@ -50,7 +61,7 @@ function Journeys() {
   const fetchJourneysPage = (pageParams) => {
     console.log("fetching journeys data")
     setFetching(true)
-    getJourneysPage(pageParams.curPage - 1, pageParams.pageLen, pageParams.sortField, pageParams.sortOrder)
+    getJourneysPage(pageParams.curPage - 1, pageParams.pageLen, pageParams.sortField, pageParams.sortOrder, pageParams.filterDeparture, pageParams.filterReturn)
       .then(data => {
         console.log(data.content)
         data.content.map((element, index) => {
@@ -65,6 +76,7 @@ function Journeys() {
   
   useEffect(() => {
     console.log("useEffect called")
+    console.log("pageParams: ", pageParams)
     fetchJourneysPage(pageParams)
   }, [pageParams])
 
@@ -73,17 +85,23 @@ function Journeys() {
     columns.forEach(column => {
       column.key === sorter.field ? column.sortOrder = sorter.order : column.sortOrder = null
     })
+    columns[0].defaultFilteredValue = filters.departureStationName
+    columns[1].defaultFilteredValue = filters.returnStationName
+
     if (sorter.field !== pageParams.sortField || sorter.order !== pageParams.sortOrder){
       pagination.current = 1
     }
+
     setPageParams({
       pageLen: pagination.pageSize,
       curPage: pagination.current,
       sortField: sorter.field,
-      sortOrder: sorter.order
+      sortOrder: sorter.order,
+      filterDeparture: filters.departureStationName !== null ? filters.departureStationName[0] : null,
+      filterReturn: filters.returnStationName !== null ? filters.returnStationName[0] : null
     })
 
-    console.log(pageParams)
+    console.log("filters: ", filters)
   }
 
   if (fetching) {

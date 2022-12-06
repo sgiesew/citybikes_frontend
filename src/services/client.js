@@ -1,7 +1,7 @@
 import axios from 'axios'
 const baseUrl = 'http://localhost:8080/api'
 
-export const getJourneysPage = (pageNr, pageLen, sortField, sortOrder) => {
+export const getJourneysPage = (pageNr, pageLen, sortField, sortOrder, filterDeparture, filterReturn) => {
     if (!sortField){
         sortField = '' 
     }
@@ -16,7 +16,9 @@ export const getJourneysPage = (pageNr, pageLen, sortField, sortOrder) => {
             pageNr,
             pageLen,
             sortField,
-            sortOrder
+            sortOrder,
+            filterDeparture,
+            filterReturn
         }
       })
     return request.then(response => response.data)
