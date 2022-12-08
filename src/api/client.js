@@ -24,14 +24,15 @@ export const getJourneysPage = (pageNr, pageLen, sortField, sortOrder, filterDep
     return request.then(response => response.data)
 }
 
-export const getStationsPage = (pageNr, pageLen) => {
+export const getStationsPage = (pageNr, pageLen, searchTerm) => {
     const request = axios.request({
         method: 'POST',
         baseURL: baseUrl,
         url: '/station',
         data: {
             pageNr,
-            pageLen
+            pageLen,
+            searchTerm
         }
       })
     return request.then(response => response.data)

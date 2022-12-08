@@ -4,8 +4,7 @@ import {Table, Spin} from 'antd'
 import {
   LoadingOutlined
 } from '@ant-design/icons'
-import {getJourneysPage} from "./services/client"
-import './App.css'
+import {getJourneysPage} from '../../api/client'
 
 const spinIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />
 
@@ -46,7 +45,7 @@ const columns = [
   },
 ]
 
-function Journeys() {
+const Journeys = () => {
 
   const [journeys, setJourneys] = useState([])
   const [fetching, setFetching] = useState(true)

@@ -8,7 +8,7 @@ import {
 
 const { Content, Sider } = Layout
 
-function MainMenu () {
+function LayoutComponent () {
   const location = useLocation()
 
   return (
@@ -52,4 +52,4 @@ function MainMenu () {
   )
 }
 
-export default MainMenu
+export default LayoutComponent

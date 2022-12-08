@@ -1,19 +1,16 @@
 import React from 'react'
 import {useState, useEffect} from 'react'
-
-import {Card, Table, Spin, Drawer, Button} from 'antd'
+import {Table, Spin, Button, Col, Form, Row} from 'antd'
 import {
   LoadingOutlined,
-  RightSquareOutlined,
-  EnvironmentOutlined
+  RightSquareOutlined
 } from '@ant-design/icons'
-import './App.css'
-
-import {getStationsPage, getStation} from "./services/client"
+import {getStationsPage, getStation} from "../../api/client"
+import SingleStationView from './SingleStationView'
 
 const spinIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />
 
-function Stations() {
+const Stations = () => {
   const columns = [
     {
       title: 'Station name',
@@ -40,13 +37,15 @@ function Stations() {
     }
   ]
 
+  const [form] = Form.useForm()
   const [stations, setStations] = useState([])
   const [fetching, setFetching] = useState(true)
   const [totalPages, setTotalPages] = useState(1)
   const [pageParams, setPageParams] = useState(
     {
       pageLen: 10,
-      curPage: 1
+      curPage: 1,
+      searchTerm: ''
     }
   )
 
@@ -57,7 +56,7 @@ function Stations() {
   const fetchStationsPage = (pageParams) => {
     console.log("fetching stations data")
     setFetching(true)
-    getStationsPage(pageParams.curPage - 1, pageParams.pageLen, pageParams.sortField, pageParams.sortOrder)
+    getStationsPage(pageParams.curPage - 1, pageParams.pageLen, pageParams.searchTerm)
       .then(data => {
         console.log(data.content)
         data.content.map((element, index) => {
@@ -78,11 +77,11 @@ function Stations() {
   const handleTableChange = (pagination, filters, sorter) => {
     
     setPageParams({
+      ...pageParams,
       pageLen: pagination.pageSize,
       curPage: pagination.current
     })
 
-    console.log(pageParams)
   }
 
   const fetchStation = id => {
@@ -95,6 +94,31 @@ function Stations() {
         })
   }
 
+  const onFinish = query => {
+    console.log(query)
+    setPageParams({
+      ...pageParams,
+      curPage: 1,
+      searchTerm: query.searchTerm
+    })
+  }
+
+  const onReset = () => {
+    setPageParams({
+      ...pageParams,
+      curPage: 1,
+      searchTerm: ''
+    })
+    form.setFieldsValue({
+      searchTerm: ''
+    })
+  }
+
+  const onFinishFailed = errorInfo => {
+      //alert(JSON.stringify(errorInfo, null, 2))
+  }
+
+
   const showDetailViewFor = id => {
     fetchStation(id)
     setStation([])
@@ -103,60 +127,6 @@ function Stations() {
     console.log(id)
   }
 
-  const renderDetailView = () => {
-    if (fetchingDetail){
-      return <Drawer
-        width={640}
-        onClose={onDetailViewClose}
-        visible={showDetailView}
-        bodyStyle={{paddingBottom: 80}}
-        >
-        <div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
-          <Spin indicator={spinIcon} />
-        </div>
-      </Drawer>
-
-    }
-    return <Drawer
-      title={station.name}
-      width={640}
-      onClose={onDetailViewClose}
-      visible={showDetailView}
-      closeIcon={<EnvironmentOutlined />}
-      bodyStyle={{paddingBottom: 80}}
-      footer={
-        <div
-          style={{
-              textAlign: 'right',
-          }}
-        >
-          <Button onClick={onDetailViewClose} style={{marginRight: 8}}>
-              Close
-          </Button>
-        </div>
-      }
-      >
-        <Card type="inner" title="Address">
-          {station.address}, {station.city}
-        </Card>
-        <Card
-          style={{ marginTop: 24 }}
-          type="inner"
-          title="Departures from this station"
-        >
-          {station.num_departures}
-        </Card>
-        <Card
-          style={{ marginTop: 12 }}
-          type="inner"
-          title="Returns to this station"
-        >
-          {station.num_returns}
-        </Card>
-    </Drawer>
-  }
-
-  const onDetailViewClose = () => setShowDetailView(false)
 
   if (fetching) {
     return <div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
@@ -164,7 +134,41 @@ function Stations() {
       </div>
   }
   return <div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
-    {renderDetailView()}
+    {SingleStationView(station, showDetailView, setShowDetailView, fetchingDetail)}
+    <Form form={form}
+            layout="vertical"
+            initialValues={pageParams}
+            onFinishFailed={onFinishFailed}
+            onFinish={onFinish}
+            style={{ margin: 24, marginTop: 24 }}
+        >
+            <Row gutter={16}>
+                <Col span={8}>
+                    <Form.Item
+                        name="searchTerm"
+                        label=""
+                        rules={[{required: true, message: 'Please enter a search term'}]}
+                    >
+                      <input type="text" />
+                    </Form.Item>
+                </Col>
+                <Col span={6}>
+                    <Form.Item>
+                        <Button type="primary" htmlType="submit" style={{marginLeft: 8, marginTop: 0}}>
+                            Search
+                        </Button>
+                    </Form.Item>
+                </Col>
+                <Col span={6}>
+                    <Form.Item>
+                        <Button htmlType="button" onClick={onReset} style={{marginLeft: 8, marginTop: 0}}>
+                            Reset
+                        </Button>
+                    </Form.Item>
+                </Col>
+            </Row>
+
+        </Form>
     <Table
       dataSource={stations}
       columns={columns}

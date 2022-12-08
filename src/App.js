@@ -3,9 +3,10 @@ import {Routes, Route, Navigate} from 'react-router-dom'
 import {unstable_HistoryRouter as HistoryRouter} from 'react-router-dom'
 import {createBrowserHistory} from 'history'
 
-import MainMenu from './MainMenu'
-import Journeys from './Journeys'
-import Stations from './Stations'
+import LayoutComponent from './pages/Layout'
+import Journeys from './pages/Journey'
+import Stations from './pages/Station'
+import './App.css'
 
 const NotFound = () => {
   return <div> NotFound Component</div>
@@ -21,7 +22,7 @@ function App() {
             <Route
               path="/home"
               element={
-                  <MainMenu />
+                  <LayoutComponent />
               }
               >
               <Route exact path="/home" element={<Journeys />}></Route>
