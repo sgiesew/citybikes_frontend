@@ -1,19 +1,15 @@
 import axios from 'axios'
 const baseUrl = 'http://localhost:8080/api'
 
-export const getJourneysPage = (pageNr, pageLen, sortField, sortOrder, filterDeparture, filterReturn) => {
-    if (!sortField){
-        sortField = '' 
-    }
-    if (!sortOrder){
-        sortOrder = '' 
-    }
+export const getJourneysPage = (params) => {
+    var {curPage, pageLen, sortField, sortOrder, filterDeparture, filterReturn} = params
+    curPage -= 1
     const request = axios.request({
         method: 'POST',
         baseURL: baseUrl,
         url: '/journey',
         data: {
-            pageNr,
+            curPage,
             pageLen,
             sortField,
             sortOrder,
@@ -24,15 +20,18 @@ export const getJourneysPage = (pageNr, pageLen, sortField, sortOrder, filterDep
     return request.then(response => response.data)
 }
 
-export const getStationsPage = (pageNr, pageLen, searchTerm) => {
+export const getStationsPage = (params) => {
+    var {curPage, pageLen, searchTerm, filterCity} = params
+    curPage -= 1
     const request = axios.request({
         method: 'POST',
         baseURL: baseUrl,
         url: '/station',
         data: {
-            pageNr,
+            curPage,
             pageLen,
-            searchTerm
+            searchTerm,
+            filterCity
         }
       })
     return request.then(response => response.data)

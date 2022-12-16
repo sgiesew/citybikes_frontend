@@ -1,6 +1,6 @@
 import React from 'react'
-import {Outlet, useLocation, Link} from 'react-router-dom'
-import {Layout, Menu} from 'antd'
+import { Outlet, useLocation, Link } from 'react-router-dom'
+import { Layout, Menu } from 'antd'
 import {
   EnvironmentOutlined,
   CompassOutlined,
@@ -10,7 +10,23 @@ const { Content, Sider } = Layout
 
 function LayoutComponent () {
   const location = useLocation()
-
+  const items = [
+    { 
+      label: 'Helsinki City Bikes', 
+      key: '/title'
+    },
+    { 
+      label: <Link to="/home">Journeys</Link>,
+      icon: <CompassOutlined />,
+      key: '/home' 
+    },
+    {
+      label: <Link to="/home/stations">Stations</Link>,
+      icon: <EnvironmentOutlined />,
+      key: '/home/stations' 
+    }
+  ];
+  
   return (
     <div>
       <Layout>
@@ -19,22 +35,13 @@ function LayoutComponent () {
             <Menu
               mode="inline"
               theme="dark"
+              items={items}
               selectedKeys={[location.pathname]}
               style={{
                 height: '100%',
                 borderRight: 0,
               }}
-            >
-              <Menu.Item key={'/title'}>
-                Helsinki City Bikes
-              </Menu.Item>
-              <Menu.Item key={'/home'} icon={<CompassOutlined />}>
-                <Link to="/home">Journeys</Link>
-              </Menu.Item>
-              <Menu.Item key={'/home/stations'} icon={<EnvironmentOutlined />}>
-                <Link to="/home/stations">Stations</Link>
-              </Menu.Item>
-            </Menu>
+            />
           </Sider>
           <Layout
             style={{

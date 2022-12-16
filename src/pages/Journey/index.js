@@ -1,6 +1,6 @@
 import React from 'react'
-import {useState, useEffect} from 'react'
-import {Table, Spin} from 'antd'
+import { useState, useEffect } from 'react'
+import { Table, Spin } from 'antd'
 import {
   LoadingOutlined
 } from '@ant-design/icons'
@@ -60,7 +60,7 @@ const Journeys = () => {
   const fetchJourneysPage = (pageParams) => {
     console.log("fetching journeys data")
     setFetching(true)
-    getJourneysPage(pageParams.curPage - 1, pageParams.pageLen, pageParams.sortField, pageParams.sortOrder, pageParams.filterDeparture, pageParams.filterReturn)
+    getJourneysPage(pageParams)
       .then(data => {
         console.log(data.content)
         data.content.map((element, index) => {

@@ -1,18 +1,30 @@
 import React from 'react'
-import {Card, Spin, Drawer, Button} from 'antd'
+import { Row, Col, Card, Spin, Drawer, Button } from 'antd'
+import { MapContainer, TileLayer, Marker } from 'react-leaflet'
+import Leaflet from 'leaflet'
+import 'leaflet/dist/leaflet.css'
+import { Line } from '@ant-design/plots'
 import {
   LoadingOutlined,
   EnvironmentOutlined
 } from '@ant-design/icons'
 
+Leaflet.Icon.Default.imagePath = '//cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/images/'
 const spinIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />
 
-const SingleStationView = (station, showDetailView, setShowDetailView, fetchingDetail) => {
+const SingleStationView = ({station, showDetailView, setShowDetailView, fetchingDetail}) => {
+  const onClose = () => {
+    setShowDetailView(false)
+  }
+
+  if (!station){
+    return
+  }
 
   if (fetchingDetail){
     return <Drawer
-      width={640}
-      onClose={setShowDetailView(false)}
+      width={'95%'}
+      onClose={onClose}
       visible={showDetailView}
       bodyStyle={{paddingBottom: 80}}
       >
@@ -22,10 +34,24 @@ const SingleStationView = (station, showDetailView, setShowDetailView, fetchingD
     </Drawer>
 
   }
+  const departuresGraphConfig = {
+    data: station.dailyDeparturesFromStation,
+    padding: 'auto',
+    xField: 'date',
+    yField: 'count',
+  }
+  const returnsGraphConfig = {
+    data: station.dailyReturnsToStation,
+    padding: 'auto',
+    xField: 'date',
+    yField: 'count',
+  }
+  const position = [station.yPos, station.xPos]
+
   return <Drawer
-    title={station.name}
-    width={640}
-    onClose={setShowDetailView(false)}
+    title={<>{station.name} ({station.address}, {station.city})</>}
+    width={'95%'}
+    onClose={onClose}
     visible={showDetailView}
     closeIcon={<EnvironmentOutlined />}
     bodyStyle={{paddingBottom: 80}}
@@ -35,29 +61,95 @@ const SingleStationView = (station, showDetailView, setShowDetailView, fetchingD
             textAlign: 'right',
         }}
       >
-        <Button onClick={setShowDetailView(false)} style={{marginRight: 8}}>
+        <Button onClick={onClose} style={{marginRight: 8}}>
             Close
         </Button>
       </div>
     }
     >
-      <Card type="inner" title="Address">
-        {station.address}, {station.city}
-      </Card>
-      <Card
-        style={{ marginTop: 24 }}
-        type="inner"
-        title="Departures from this station"
-      >
-        {station.num_departures}
-      </Card>
-      <Card
-        style={{ marginTop: 12 }}
-        type="inner"
-        title="Returns to this station"
-      >
-        {station.num_returns}
-      </Card>
+      <Row>
+        <Col span={8}>
+          <MapContainer style={{ height: 200, width: 300 }} center={position} zoom={13} >
+            <TileLayer
+              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <Marker position={position}></Marker>
+          </MapContainer>
+        </Col>
+        <Col span={8}>
+          <Row>
+            <Col span={12}>
+              <Card
+                style={{ marginTop: 0 }}
+                type="inner"
+                title="Total departures"
+              >
+                {station.numDepartures}
+              </Card>
+              <Card
+                style={{ marginTop: 0 }}
+                type="inner"
+                title="Average length"
+              >
+                {station.averageDepartureDistance} m
+              </Card>
+            </Col>
+            <Col span={12}>
+              <Card
+                style={{ marginTop: 0 }}
+                type="inner"
+                title="Total returns"
+              >
+                {station.numReturns}
+              </Card>
+              <Card
+                style={{ marginTop: 0 }}
+                type="inner"
+                title="Average length"
+              >
+                {station.averageReturnDistance} m
+              </Card>
+            </Col>
+          </Row>
+        </Col>
+        <Col span={8}>
+          <Row>
+            <Col span={12}>
+              <Card
+                style={{ marginTop: 0 }}
+                type="inner"
+                title="Most popular return stations"
+              >
+                {station.returnedToFromStationRanked.map( (returnStation, index) => <div key={index}>{index+1}) {returnStation}</div>)}
+              </Card>
+            </Col>
+            <Col span={12}>
+              <Card
+                style={{ marginTop: 0 }}
+                type="inner"
+                title="Most popular departure stations"
+              >
+                {station.departedFromToStationRanked.map( (departureStation, index) => <div key={index}>{index+1}) {departureStation}</div>)}
+              </Card>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+      <Row>
+        <Col span={12}>
+          <Line {...departuresGraphConfig}
+                  title = 'Departures'
+                  style={{ height: 200, margin: 8, marginTop: 24 }
+            }/>
+        </Col>
+        <Col span={12}>
+          <Line {...returnsGraphConfig}
+                    title = 'Returns'
+                    style={{ height: 200, margin: 8, marginTop: 24 }
+            }/>
+        </Col>
+      </Row>
   </Drawer>
 
 }
