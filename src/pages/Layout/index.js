@@ -5,25 +5,27 @@ import {
   EnvironmentOutlined,
   CompassOutlined,
 } from '@ant-design/icons'
+//import styles from './index.module.scss'
 
-const { Content, Sider } = Layout
+const { Header, Content, Sider } = Layout
 
-function LayoutComponent () {
+const LayoutComponent = () => {
   const location = useLocation()
   const items = [
     { 
-      label: 'Helsinki City Bikes', 
-      key: '/title'
-    },
-    { 
-      label: <Link to="/home">Journeys</Link>,
-      icon: <CompassOutlined />,
+      label: <Link to="/home">Stations (map)</Link>,
+      icon: <EnvironmentOutlined />,
       key: '/home' 
     },
     {
-      label: <Link to="/home/stations">Stations</Link>,
+      label: <Link to="/home/stations">Stations (list)</Link>,
       icon: <EnvironmentOutlined />,
       key: '/home/stations' 
+    },
+    { 
+      label: <Link to="/home/journeys">Journeys</Link>,
+      icon: <CompassOutlined />,
+      key: '/home/journeys' 
     }
   ];
   
@@ -45,7 +47,7 @@ function LayoutComponent () {
           </Sider>
           <Layout
             style={{
-              padding: '24px',
+              padding: '6px',
               overflow: 'auto',
             }}
           >

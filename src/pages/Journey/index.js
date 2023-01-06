@@ -47,6 +47,8 @@ const columns = [
 
 const Journeys = () => {
 
+  console.log("initializing")
+
   const [journeys, setJourneys] = useState([])
   const [fetching, setFetching] = useState(true)
   const [totalPages, setTotalPages] = useState(1)
@@ -121,7 +123,7 @@ const Journeys = () => {
         total: totalPages * pageParams.pageLen
       }}
     />
-    </div>
+  </div>
 }
 
 export default Journeys

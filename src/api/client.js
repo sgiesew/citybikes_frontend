@@ -7,7 +7,7 @@ export const getJourneysPage = (params) => {
     const request = axios.request({
         method: 'POST',
         baseURL: baseUrl,
-        url: '/journey',
+        url: '/journey/page',
         data: {
             curPage,
             pageLen,
@@ -26,7 +26,7 @@ export const getStationsPage = (params) => {
     const request = axios.request({
         method: 'POST',
         baseURL: baseUrl,
-        url: '/station',
+        url: '/station/page',
         data: {
             curPage,
             pageLen,
@@ -39,5 +39,10 @@ export const getStationsPage = (params) => {
 
 export const getStation = id => {
     const request = axios.get(`${baseUrl}/station/${id}`)
+    return request.then(response => response.data)
+}
+
+export const getStations = () => {
+    const request = axios.get(`${baseUrl}/station`)
     return request.then(response => response.data)
 }

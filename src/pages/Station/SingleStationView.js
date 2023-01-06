@@ -48,7 +48,7 @@ const SingleStationView = ({station, showDetailView, setShowDetailView, fetching
   }
   const position = [station.yPos, station.xPos]
 
-  return <Drawer
+  return <Drawer className="site-layout-background"
     title={<>{station.name} ({station.address}, {station.city})</>}
     width={'95%'}
     onClose={onClose}
@@ -69,7 +69,7 @@ const SingleStationView = ({station, showDetailView, setShowDetailView, fetching
     >
       <Row>
         <Col span={8}>
-          <MapContainer style={{ height: 200, width: 300 }} center={position} zoom={13} >
+          <MapContainer style={{ height: '20vw', width: '100%' }} center={position} zoom={13} >
             <TileLayer
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
