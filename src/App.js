@@ -25,7 +25,7 @@ const App = () => {
                   <LayoutComponent />
               }
             >
-              <Route exact path="/home" element={<StationsMap />}></Route>
+              <Route exact path="/home" element={<StationsMap /> }></Route>
               <Route path="/home/stations" element={<Stations />}></Route>
               <Route path="/home/journeys" element={<Journeys />}></Route>
             </Route>

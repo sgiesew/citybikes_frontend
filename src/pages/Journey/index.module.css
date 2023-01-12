@@ -1,1 +1,13 @@
 @import '~antd/dist/antd.css';
+
+.table {
+    padding: 24px;
+    min-height: 360px;
+}
+
+.spin {
+    padding: 24px;
+    min-height: 360px;
+    height: 100vh;
+}
+

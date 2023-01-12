@@ -1,10 +1,12 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { Table, Spin } from 'antd'
 import {
   LoadingOutlined
 } from '@ant-design/icons'
 import {getJourneysPage} from '../../api/client'
+import styles from './index.module.css'
 
 const spinIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />
 
@@ -47,8 +49,7 @@ const columns = [
 
 const Journeys = () => {
 
-  console.log("initializing")
-
+  const location = useLocation()
   const [journeys, setJourneys] = useState([])
   const [fetching, setFetching] = useState(true)
   const [totalPages, setTotalPages] = useState(1)
@@ -76,10 +77,19 @@ const Journeys = () => {
   }
   
   useEffect(() => {
-    console.log("useEffect called")
+    console.log("pageParams useEffect called")
     console.log("pageParams: ", pageParams)
     fetchJourneysPage(pageParams)
   }, [pageParams])
+
+  useEffect(() => {
+    console.log("location useEffect called")
+    columns[0].defaultFilteredValue = null
+    columns[1].defaultFilteredValue = null
+    columns[2].sortOrder = null
+    columns[3].sortOrder = null
+  }, [location])
+
 
   const handleTableChange = (pagination, filters, sorter) => {
     
@@ -106,11 +116,11 @@ const Journeys = () => {
   }
 
   if (fetching) {
-    return <div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
+    return <div className={styles.spin}>
         <Spin indicator={spinIcon} />
       </div>
   }
-  return <div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
+  return <div className={styles.table}>
     <Table
       dataSource={journeys}
       columns={columns}

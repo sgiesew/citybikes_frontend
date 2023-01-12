@@ -1,11 +1,5 @@
 @import '~antd/dist/antd.css';
 
-.logo {
-    float: left;
-    width: 150px;
-    height: 150px;
-    margin: 8px;
-    background: url('~assets/HSL_logo_square.png');
-    background-size: cover;
-  }
-
+.menu {
+  width: 170px;
+}

@@ -58,11 +58,11 @@ const StationsMap = () => {
 
 
   if (fetching) {
-    return <div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
+    return <div className="site-layout-background" style={{padding: 24, minHeight: 360, height: '100vh'}}>
         <Spin indicator={spinIcon} />
       </div>
   }
-  return <div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
+  return <div className="site-layout-background" style={{padding: 0, minHeight: 360}}>
     <SingleStationView
       station={station}
       showDetailView={showDetailView}

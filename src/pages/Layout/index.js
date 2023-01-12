@@ -2,23 +2,26 @@ import React from 'react'
 import { Outlet, useLocation, Link } from 'react-router-dom'
 import { Layout, Menu } from 'antd'
 import {
+  GlobalOutlined,
   EnvironmentOutlined,
   CompassOutlined,
 } from '@ant-design/icons'
-//import styles from './index.module.scss'
+import logo from '../../assets/logo_large.png'
+import caption from '../../assets/caption.png'
+import styles from './index.module.css'
 
-const { Header, Content, Sider } = Layout
+const { Content, Sider } = Layout
 
 const LayoutComponent = () => {
   const location = useLocation()
   const items = [
     { 
-      label: <Link to="/home">Stations (map)</Link>,
-      icon: <EnvironmentOutlined />,
+      label: <Link to="/home">Stations (Map)</Link>,
+      icon: <GlobalOutlined />,
       key: '/home' 
     },
     {
-      label: <Link to="/home/stations">Stations (list)</Link>,
+      label: <Link to="/home/stations">Stations (List)</Link>,
       icon: <EnvironmentOutlined />,
       key: '/home/stations' 
     },
@@ -33,25 +36,18 @@ const LayoutComponent = () => {
     <div>
       <Layout>
         <Layout>
-          <Sider width={200} className="site-layout-background">
-            <Menu
+          <Sider width={170}>
+            <img className={styles.menu} src={logo} alt="hsl_logo"/>
+            <img className={styles.menu} src={caption} alt="hsl_caption"/>
+            <Menu style={{paddingTop: 16}}
               mode="inline"
               theme="dark"
               items={items}
               selectedKeys={[location.pathname]}
-              style={{
-                height: '100%',
-                borderRight: 0,
-              }}
             />
           </Sider>
-          <Layout
-            style={{
-              padding: '6px',
-              overflow: 'auto',
-            }}
-          >
-            <Content className="site-layout-background">
+          <Layout>
+            <Content>
               <Outlet></Outlet>
             </Content>
           </Layout>

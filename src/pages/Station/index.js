@@ -1,11 +1,13 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { Table, Spin, Button, Col, Form, Row } from 'antd'
 import {
   LoadingOutlined
 } from '@ant-design/icons'
 import {getStationsPage, getStation} from '../../api/client'
 import SingleStationView from './SingleStationView'
+import styles from './index.module.css'
 
 const spinIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />
 
@@ -28,8 +30,9 @@ const columns = [
 ]
 
 const Stations = () => {
-
+  
   const [form] = Form.useForm()
+  const location = useLocation()
   const [stations, setStations] = useState([])
   const [fetching, setFetching] = useState(true)
   const [totalPages, setTotalPages] = useState(1)
@@ -63,9 +66,14 @@ const Stations = () => {
   }
   
   useEffect(() => {
-    console.log("useEffect called")
+    console.log("pageParams useEffect called")
     fetchStationsPage(pageParams)
   }, [pageParams])
+  
+  useEffect(() => {
+    console.log("location useEffect called")
+    columns[1].defaultFilteredValue = null
+  }, [location])
 
   const handleTableChange = (pagination, filters, sorter) => {
     columns[1].defaultFilteredValue = filters.city
@@ -136,7 +144,6 @@ const Stations = () => {
       initialValues={pageParams}
       onFinishFailed={onFinishFailed}
       onFinish={onFinish}
-      style={{ margin: 8 }}
     >
       <Row>
         <Col span={8}>
@@ -150,14 +157,14 @@ const Stations = () => {
         </Col>
         <Col span={4}>
           <Form.Item>
-            <Button type="primary" htmlType="submit" style={{marginLeft: 8, marginTop: 0}}>
+            <Button type="primary" htmlType="submit" className={styles.formbutton}>
               Search
             </Button>
           </Form.Item>
         </Col>
         <Col span={6}>
           <Form.Item>
-            <Button htmlType="button" onClick={onReset} style={{marginLeft: 8, marginTop: 0}}>
+            <Button htmlType="button" onClick={onReset} className={styles.formbutton} style={{backgroundColor: '#fff200'}}>
               Reset
             </Button>
           </Form.Item>
@@ -168,11 +175,11 @@ const Stations = () => {
 
   
   if (fetching) {
-    return <div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
+    return <div className={styles.spin}>
         <Spin indicator={spinIcon} />
       </div>
   }
-  return <div className="site-layout-background" style={{padding: 24, minHeight: 360}}>
+  return <div className={styles.table}>
     <SingleStationView
       station={station}
       showDetailView={showDetailView}
@@ -183,6 +190,7 @@ const Stations = () => {
     <Table
       dataSource={stations}
       columns={columns}
+      style={{cursor: "pointer"}}
       bordered
       rowKey="id"
       onChange={handleTableChange}

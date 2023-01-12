@@ -1,1 +1,24 @@
 @import '~antd/dist/antd.css';
+
+.table {
+    padding: 24px;
+    min-height: 360px;
+}
+
+.formbutton {
+    margin-left: 12px;
+}
+
+.exitbutton {
+    margin-right: 8px;
+}
+
+.mapdetail {
+    margin: 2px;
+}
+
+.spin {
+    padding: 24px;
+    min-height: 360px;
+    height: 100vh;
+}
