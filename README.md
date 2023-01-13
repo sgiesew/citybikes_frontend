@@ -5,7 +5,7 @@ CITYBIKES FRONTEND
 Installing and running the project
 ==================================
 
-If you haven't already, go to https://nodejs.org/en/download/ and install node.js on your local machine.
+If you haven't already, please go to https://nodejs.org/en/download/ and install node.js on your local machine.
 
 Clone the project from GitHub into a local folder. Change into that folder. Open a console and enter 'npm install'. Then enter 'npm start'. The project will open in your browser at 'localhost:3000'
 
