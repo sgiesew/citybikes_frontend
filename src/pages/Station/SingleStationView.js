@@ -89,14 +89,14 @@ const SingleStationView = ({station, showDetailView, setShowDetailView, fetching
             <Col span={12}>
               <Card
                 style={{ margin: 2 }}
-                type="inner"
-                title="Total departures"
+                type='inner'
+                title='Total departures'
               >
                 {station.numDepartures}
               </Card>
               <Card
                 style={{ margin: 2 }}
-                type="inner"
+                type='inner'
                 title={<div>Average journey<br></br>from here</div>}
               >
                 {station.averageDepartureDistance} m
@@ -105,14 +105,14 @@ const SingleStationView = ({station, showDetailView, setShowDetailView, fetching
             <Col span={12}>
               <Card
                 style={{ margin: 2 }}
-                type="inner"
-                title="Total returns"
+                type='inner'
+                title='Total returns'
               >
                 {station.numReturns}
               </Card>
               <Card
                 style={{ margin: 2 }}
-                type="inner"
+                type='inner'
                 title={<div>Average journey<br></br>to here</div>}
               >
                 {station.averageReturnDistance} m
@@ -125,7 +125,7 @@ const SingleStationView = ({station, showDetailView, setShowDetailView, fetching
             <Col span={12}>
               <Card
                 style={{ margin: 2 }}
-                type="inner"
+                type='inner'
                 title={<div>Most popular<br></br>return stations</div>}
               >
                 {station.returnedToFromStationRanked.map( (returnStation, index) => <div key={index}>{index+1}) {returnStation}</div>)}
@@ -134,7 +134,7 @@ const SingleStationView = ({station, showDetailView, setShowDetailView, fetching
             <Col span={12}>
               <Card
                 style={{ margin: 2 }}
-                type="inner"
+                type='inner'
                 title={<div>Most popular<br></br>departure stations</div>}
               >
                 {station.departedFromToStationRanked.map( (departureStation, index) => <div key={index}>{index+1}) {departureStation}</div>)}
@@ -147,8 +147,8 @@ const SingleStationView = ({station, showDetailView, setShowDetailView, fetching
         <Col span={12}>
           <Card
             style={{ margin: 2 }}
-            type="inner"
-            title="Departures per day"
+            type='inner'
+            title='Departures per day'
           >
             <Line {...departuresGraphConfig}
                     title = 'Departures'
@@ -159,8 +159,8 @@ const SingleStationView = ({station, showDetailView, setShowDetailView, fetching
         <Col span={12}>
           <Card
             style={{ margin: 2 }}
-            type="inner"
-            title="Returns per day"
+            type='inner'
+            title='Returns per day'
           >
             <Line {...returnsGraphConfig}
                       title = 'Returns'

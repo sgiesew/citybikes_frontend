@@ -61,11 +61,9 @@ const Journeys = () => {
   )
 
   const fetchJourneysPage = (pageParams) => {
-    console.log("fetching journeys data")
     setFetching(true)
     getJourneysPage(pageParams)
       .then(data => {
-        console.log(data.content)
         data.content.map((element, index) => {
           element.id = index
           return element
@@ -77,13 +75,10 @@ const Journeys = () => {
   }
   
   useEffect(() => {
-    console.log("pageParams useEffect called")
-    console.log("pageParams: ", pageParams)
     fetchJourneysPage(pageParams)
   }, [pageParams])
 
   useEffect(() => {
-    console.log("location useEffect called")
     columns[0].defaultFilteredValue = null
     columns[1].defaultFilteredValue = null
     columns[2].sortOrder = null
@@ -112,7 +107,6 @@ const Journeys = () => {
       filterReturn: filters.returnStationName !== null ? filters.returnStationName[0] : null
     })
 
-    console.log("filters: ", filters)
   }
 
   if (fetching) {
@@ -125,7 +119,7 @@ const Journeys = () => {
       dataSource={journeys}
       columns={columns}
       bordered
-      rowKey="id"
+      rowKey='id'
       onChange={handleTableChange}
       pagination={{
         current: pageParams.curPage,

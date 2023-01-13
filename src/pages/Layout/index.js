@@ -16,17 +16,17 @@ const LayoutComponent = () => {
   const location = useLocation()
   const items = [
     { 
-      label: <Link to="/home">Stations (Map)</Link>,
+      label: <Link to='/home'>Stations (Map)</Link>,
       icon: <GlobalOutlined />,
       key: '/home' 
     },
     {
-      label: <Link to="/home/stations">Stations (List)</Link>,
+      label: <Link to='/home/stations'>Stations (List)</Link>,
       icon: <EnvironmentOutlined />,
       key: '/home/stations' 
     },
     { 
-      label: <Link to="/home/journeys">Journeys</Link>,
+      label: <Link to='/home/journeys'>Journeys</Link>,
       icon: <CompassOutlined />,
       key: '/home/journeys' 
     }
@@ -37,11 +37,11 @@ const LayoutComponent = () => {
       <Layout>
         <Layout>
           <Sider width={170}>
-            <img className={styles.menu} src={logo} alt="hsl_logo"/>
-            <img className={styles.menu} src={caption} alt="hsl_caption"/>
+            <img className={styles.menu} src={logo} alt='hsl_logo'/>
+            <img className={styles.menu} src={caption} alt='hsl_caption'/>
             <Menu style={{paddingTop: 16}}
-              mode="inline"
-              theme="dark"
+              mode='inline'
+              theme='dark'
               items={items}
               selectedKeys={[location.pathname]}
             />

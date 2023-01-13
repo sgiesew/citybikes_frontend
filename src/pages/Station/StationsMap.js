@@ -23,29 +23,24 @@ const StationsMap = () => {
   const [station, setStation] = useState(null)
 
   const fetchStations = () => {
-    console.log("fetching stations data")
     setFetching(true)
     getStations()
       .then(data => {
-        console.log(data)
         setStations(data)
         setFetching(false)
       })
   }
   
   useEffect(() => {
-    console.log("useEffect called")
     fetchStations()
   }, [])
 
   const fetchStation = id => {
-    console.log("fetching station data")
     getStation(id)
-        .then(data => {
-            console.log(data);
-            setStation(data);
-            setFetchingDetail(false)
-        })
+      .then(data => {
+        setStation(data);
+        setFetchingDetail(false)
+      })
   }
 
   const showDetailViewFor = id => {
@@ -53,16 +48,15 @@ const StationsMap = () => {
     setStation([])
     setShowDetailView(true)
     setFetchingDetail(true)
-    console.log(id)
   }
 
 
   if (fetching) {
-    return <div className="site-layout-background" style={{padding: 24, minHeight: 360, height: '100vh'}}>
+    return <div className={styles.spin}>
         <Spin indicator={spinIcon} />
       </div>
   }
-  return <div className="site-layout-background" style={{padding: 0, minHeight: 360}}>
+  return <div>
     <SingleStationView
       station={station}
       showDetailView={showDetailView}

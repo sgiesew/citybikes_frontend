@@ -50,11 +50,9 @@ const Stations = () => {
   const [station, setStation] = useState(null)
 
   const fetchStationsPage = (pageParams) => {
-    console.log("fetching stations data")
     setFetching(true)
     getStationsPage(pageParams)
       .then(data => {
-        console.log(data.content)
         data.content.map((element, index) => {
           element.id = index
           return element
@@ -66,19 +64,16 @@ const Stations = () => {
   }
   
   useEffect(() => {
-    console.log("pageParams useEffect called")
     fetchStationsPage(pageParams)
   }, [pageParams])
   
   useEffect(() => {
-    console.log("location useEffect called")
     columns[1].defaultFilteredValue = null
   }, [location])
 
   const handleTableChange = (pagination, filters, sorter) => {
     columns[1].defaultFilteredValue = filters.city
 
-    console.log(filters.city)
     if ((filters.city === null && pageParams.filterCity !== null) || (filters.city !== null && pageParams.filterCity === null)){
       pagination.current = 1
     }
@@ -93,17 +88,14 @@ const Stations = () => {
   }
 
   const fetchStation = id => {
-    console.log("fetching station data")
     getStation(id)
         .then(data => {
-            console.log(data);
             setStation(data);
             setFetchingDetail(false)
         })
   }
 
   const onFinish = query => {
-    console.log(query)
     setPageParams({
       ...pageParams,
       curPage: 1,
@@ -135,12 +127,11 @@ const Stations = () => {
     setStation([])
     setShowDetailView(true)
     setFetchingDetail(true)
-    console.log(id)
   }
 
   const showSearchForm = () => {
     return <Form form={form}
-      layout="horizontal"
+      layout='horizontal'
       initialValues={pageParams}
       onFinishFailed={onFinishFailed}
       onFinish={onFinish}
@@ -148,23 +139,23 @@ const Stations = () => {
       <Row>
         <Col span={8}>
           <Form.Item
-            name="searchTerm"
-            label=""
+            name='searchTerm'
+            label=''
             rules={[{required: true, message: 'Please enter a search term'}]}
           >
-            <input type="text" style={{ width: '100%' }}/>
+            <input type='text' style={{ width: '100%' }}/>
           </Form.Item>
         </Col>
         <Col span={4}>
           <Form.Item>
-            <Button type="primary" htmlType="submit" className={styles.formbutton}>
+            <Button type='primary' htmlType='submit' className={styles.formbutton}>
               Search
             </Button>
           </Form.Item>
         </Col>
         <Col span={6}>
           <Form.Item>
-            <Button htmlType="button" onClick={onReset} className={styles.formbutton} style={{backgroundColor: '#fff200'}}>
+            <Button htmlType='button' onClick={onReset} className={styles.formbutton} style={{backgroundColor: '#fff200'}}>
               Reset
             </Button>
           </Form.Item>
@@ -190,9 +181,9 @@ const Stations = () => {
     <Table
       dataSource={stations}
       columns={columns}
-      style={{cursor: "pointer"}}
+      style={{cursor: 'pointer'}}
       bordered
-      rowKey="id"
+      rowKey='id'
       onChange={handleTableChange}
       onRow={(record) => {
         return {
