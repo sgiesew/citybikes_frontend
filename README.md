@@ -24,7 +24,7 @@ The app opens with a map view of all the bike stations. Use the mouse wheel to z
 
 ### Details view of a station
 
-The station details view displays
+The station details view displays:
 - The name and address of the station
 - The location of the station on the map
 - The total number of departures from this station
