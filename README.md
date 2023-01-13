@@ -18,9 +18,13 @@ Features
 The app displays data from journeys made with city bikes in the Helsinki Capital area, and also details about the bike stations.
 - Use the panel on the left side of the screen to switch between the map view of the stations, the list view of the stations, and the list view of the journeys
 
-Map view of the stations
-------------------------
-The app opens with a map view of all the bike stations. Use the mouse wheel to zoom in or out at the mouse pointer position. Click on a yellow dot to open the details view for a station. The station details view displays:
+### Map view of the stations
+
+The app opens with a map view of all the bike stations. Use the mouse wheel to zoom in or out at the mouse pointer position. Click on a yellow dot to open the details view for a station. 
+
+### Details view of a station
+
+The station details view displays
 - The name and address of the station
 - The location of the station on the map
 - The total number of departures from this station
@@ -32,16 +36,16 @@ The app opens with a map view of all the bike stations. Use the mouse wheel to z
 - A graph of the daily departures from this station
 - A graph of the daily returns to this station
 
-List of stations
-----------------
+### List of stations
+
 A paginated list of the bike stations
 - Click on an entry in the list to open the details view for a station
 - Use the search field on top to do a search in the stations
 - Use the filter symbol in the header of the 'City' column to filter for 'Helsinki' or 'Espoo' (works in conjunction with a search)
 - Click the Reset button to reset the list
 
-List of journeys
-----------------
+### List of journeys
+
 A paginated list of journeys
 - Click on the header of the 'Distance' and 'Duration' columns to order the journeys by distance and/or duration, descending or ascending. Click again to cancel sorting.
 - Use the filter symbol in the header of the 'From' and 'To' columns to filter for journeys starting/ending at metro stations, or at train stations
