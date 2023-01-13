@@ -62,6 +62,7 @@ const SingleStationView = ({station, showDetailView, setShowDetailView, fetching
     onClose={onClose}
     visible={showDetailView}
     closeIcon={<EnvironmentOutlined />}
+    destroyOnClose
     footer={
       <div
         style={{textAlign: 'right'}}
