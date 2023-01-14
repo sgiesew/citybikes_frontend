@@ -47,8 +47,8 @@ A paginated list of the bike stations
 ### List of journeys
 
 A paginated list of journeys
-- Click on the header of the 'Distance' and 'Duration' columns to order the journeys by distance and/or duration, descending or ascending. Click again to cancel sorting.
-- Use the filter symbol in the header of the 'From' and 'To' columns to filter for journeys starting/ending at metro stations, or at train stations
+- Click on the header of the 'Distance' and 'Duration' columns to order the journeys by distance or by duration, descending or ascending. Click again to cancel sorting.
+- Use the filter symbol in the header of the 'From' and 'To' columns to filter for journeys starting/ending at metro stations, or at train stations (works in conjunction with ordering)
 
 
 Technologies
