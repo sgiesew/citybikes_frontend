@@ -40,8 +40,8 @@ The station details view displays:
 
 A paginated list of the bike stations
 - Click on an entry in the list to open the details view for a station
-- Use the search field on top to do a search in the stations
-- Use the filter symbol in the header of the 'City' column to filter for 'Helsinki' or 'Espoo' (works in conjunction with a search)
+- Use the search field on top to do a search within the stations
+- Use the filter symbol in the header of the 'City' column to filter for 'Helsinki' or 'Espoo' (can also be applied to the result a search)
 - Click the Reset button to reset the list
 
 ### List of journeys
