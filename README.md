@@ -54,9 +54,6 @@ A paginated list of journeys
 Technologies
 ============
 
-- React
-- React Router
-- Ant Design
-- Leaflet
-
-
+- React: You can build interactive user interfaces and web applications quickly and efficiently with significantly less code than you would with vanilla JavaScript. Its well-defined lifecycle, component-based approach, and use of plain JavaScript make React JS very easy to learn.
+- Ant Design: Ant Design aims to avoid complicated, messy designs and focuses on ensuring user certainty with consistent appearances. It offers UI components that work out of the box. It has a unified design language, ideal for projects where there are no strict guidelines for style.
+- Leaflet: Leaflet is the leading open-source JavaScript library for mobile-friendly interactive maps that works with OpenStreetMap.
