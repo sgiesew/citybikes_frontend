@@ -1,18 +1,13 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { MaterialReactTable } from 'material-react-table'
-import { Spin } from 'antd'
-import {
-  LoadingOutlined
-} from '@ant-design/icons'
+import CircularProgress from '@mui/material/CircularProgress'
+import Box from '@mui/material/Box'
 import {getJourneysPage} from '../../api/client'
-import styles from './index.module.css'
-
-const spinIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />
 
 const columns = [
   {
-    header: 'From',
+    header: 'Departure',
     accessorKey: 'departureStationName',
     enableSorting: false,
     enableColumnFilter: true,
@@ -20,7 +15,7 @@ const columns = [
     filterSelectOptions: ['Metro station', 'Train station', 'School', 'Museum', 'Stadium']
   },
   {
-    header: 'To',
+    header: 'Destination',
     accessorKey: 'returnStationName',
     enableSorting: false,
     enableColumnFilter: true,
@@ -77,31 +72,49 @@ const Journeys = () => {
 
   
   if (fetching) {
-    return <div className={styles.spin}>
-        <Spin indicator={spinIcon} />
-      </div>
+    return (
+      <Box sx={{ display: 'flex' }}>
+        <CircularProgress />
+      </Box>)
   }
-  return <div className={styles.table}>
-    <MaterialReactTable
-      data={journeys}
-      columns={columns}
-      getRowId={(row) => row.id}
-      enableGlobalFilter={false}
-      initialState={{ showColumnFilters: true }}
-      manualPagination
-      manualSorting
-      manualFiltering
-      onPaginationChange={setPagination}
-      onSortingChange={setSorting}
-      onColumnFiltersChange={setColumnFilters}
-      rowCount={rowCount}
-      state={{
-        pagination,
-        sorting,
-        columnFilters
-      }}
-    />
-  </div>
+  return (
+    <Box sx={{ m: 2 }}>
+      <MaterialReactTable
+        data={journeys}
+        columns={columns}
+        getRowId={(row) => row.id}
+        enableGlobalFilter={false}
+        initialState={{
+          showColumnFilters: true
+        }}
+        manualPagination
+        manualSorting
+        manualFiltering
+        onPaginationChange={setPagination}
+        onSortingChange={setSorting}
+        onColumnFiltersChange={setColumnFilters}
+        rowCount={rowCount}
+        state={{
+          pagination,
+          sorting,
+          columnFilters
+        }}
+        muiTableHeadCellProps={{
+          sx: (theme) => ({
+            color: theme.palette.primary.main,
+            fontSize: 16
+          }),
+        }}
+        muiTablePaperProps={{
+          elevation: 0,
+          sx: {
+            borderRadius: '0',
+            border: '1px solid #e0e0e0',
+          }
+        }}
+      />
+    </Box>
+  )
 }
 
 export default Journeys

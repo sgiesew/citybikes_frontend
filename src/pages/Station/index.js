@@ -1,15 +1,10 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import { MaterialReactTable } from 'material-react-table'
-import { Spin } from 'antd'
-import {
-  LoadingOutlined
-} from '@ant-design/icons'
+import CircularProgress from '@mui/material/CircularProgress'
+import Box from '@mui/material/Box'
 import {getStationsPage, getStation} from '../../api/client'
 import SingleStationView from './SingleStationView'
-import styles from './index.module.css'
-
-const spinIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />
 
 const columns = [
   {
@@ -64,12 +59,11 @@ const Stations = () => {
 
   const fetchStation = id => {
     getStation(id)
-        .then(data => {
-            setStation(data);
-            setFetchingDetail(false)
-        })
+      .then(data => {
+        setStation(data)
+        setFetchingDetail(false)
+      })
   }
-
 
   const showDetailViewFor = id => {
     fetchStation(id)
@@ -77,57 +71,70 @@ const Stations = () => {
     setShowDetailView(true)
     setFetchingDetail(true)
   }
-
-
   
   if (fetching) {
-    return <div className={styles.spin}>
-        <Spin indicator={spinIcon} />
-      </div>
+    return (
+      <Box sx={{ display: 'flex' }}>
+        <CircularProgress />
+      </Box>)
   }
-  return <div className={styles.table}>
-    <SingleStationView
-      station={station}
-      showDetailView={showDetailView}
-      setShowDetailView={setShowDetailView}
-      fetchingDetail={fetchingDetail}
+  return (
+    <Box sx={{ m: 2 }}>
+      <SingleStationView
+        station={station}
+        showDetailView={showDetailView}
+        setShowDetailView={setShowDetailView}
+        fetchingDetail={fetchingDetail}
+        />
+      <MaterialReactTable
+        data={stations}
+        columns={columns}
+        getRowId={(row) => row.station_id}
+        initialState={{
+          showColumnFilters: true,
+          showGlobalFilter: true
+        }}
+        manualPagination
+        manualFiltering
+        positionGlobalFilter='left'
+        muiSearchTextFieldProps={{
+          placeholder: 'Search stations',
+          sx: { minWidth: '300px' },
+          variant: 'outlined',
+        }}
+        onPaginationChange={setPagination}
+        onGlobalFilterChange={setGlobalFilter}
+        onColumnFiltersChange={setColumnFilters}
+        rowCount={rowCount}
+        state={{
+          pagination,
+          globalFilter,
+          columnFilters
+        }}
+        muiTableBodyRowProps={({ row }) => ({
+          onClick: () => {
+            showDetailViewFor(row.original.station_id)
+          },
+          sx: {
+            cursor: 'pointer',
+          },
+        })}
+        muiTableHeadCellProps={{
+          sx: (theme) => ({
+            color: theme.palette.primary.main,
+            fontSize: 16
+          }),
+        }}
+        muiTablePaperProps={{
+          elevation: 0,
+          sx: {
+            borderRadius: '0',
+            border: '1px solid #e0e0e0',
+          }
+        }}
       />
-    <MaterialReactTable
-      data={stations}
-      columns={columns}
-      getRowId={(row) => row.station_id}
-      muiTableBodyRowProps={({ row }) => ({
-        onClick: () => {
-          showDetailViewFor(row.original.station_id)
-        },
-        sx: {
-          cursor: 'pointer',
-        },
-      })}
-      initialState={{
-        showColumnFilters: true,
-        showGlobalFilter: true
-      }}
-      manualPagination
-      manualFiltering
-      positionGlobalFilter='left'
-      muiSearchTextFieldProps={{
-        placeholder: 'Search stations',
-        sx: { minWidth: '300px' },
-        variant: 'outlined',
-      }}
-      onPaginationChange={setPagination}
-      onGlobalFilterChange={setGlobalFilter}
-      onColumnFiltersChange={setColumnFilters}
-      rowCount={rowCount}
-      state={{
-        pagination,
-        globalFilter,
-        columnFilters
-      }}
-    />
-  </div>
-  
+    </Box>
+  )
 }
 
 export default Stations

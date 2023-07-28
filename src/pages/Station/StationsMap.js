@@ -1,17 +1,12 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { Spin } from 'antd'
-import {
-  LoadingOutlined
-} from '@ant-design/icons'
+import CircularProgress from '@mui/material/CircularProgress'
+import Box from '@mui/material/Box'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import Leaflet from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import {getStations, getStation} from '../../api/client'
 import SingleStationView from './SingleStationView'
-import styles from './index.module.css'
-
-const spinIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />
 
 const StationsMap = () => {
 
@@ -38,7 +33,7 @@ const StationsMap = () => {
   const fetchStation = id => {
     getStation(id)
       .then(data => {
-        setStation(data);
+        setStation(data)
         setFetchingDetail(false)
       })
   }
@@ -52,9 +47,10 @@ const StationsMap = () => {
 
 
   if (fetching) {
-    return <div className={styles.spin}>
-        <Spin indicator={spinIcon} />
-      </div>
+    return (
+      <Box sx={{ display: 'flex' }}>
+        <CircularProgress />
+      </Box>)
   }
   return <div>
     <SingleStationView
@@ -72,7 +68,7 @@ const StationsMap = () => {
         <Marker
           key={index}
           icon={Leaflet.divIcon({
-            className: styles.logo,
+            className: 'dot',
             html: '🟡',
             popupAnchor: [2, -1]
           })}

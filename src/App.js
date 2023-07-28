@@ -6,7 +6,6 @@ import LayoutComponent from './pages/Layout'
 import Journeys from './pages/Journey'
 import Stations from './pages/Station'
 import StationsMap from './pages/Station/StationsMap'
-import './App.css'
 
 const NotFound = () => {
   return <div> NotFound Component</div>
@@ -19,12 +18,7 @@ const App = () => {
         <Suspense fallback={<div>Loading</div>}>
           <Routes>
             <Route path="/" element={<Navigate to="/home" replace />}></Route>
-            <Route
-              path="/home"
-              element={
-                  <LayoutComponent />
-              }
-            >
+            <Route path="/home" element={<LayoutComponent />}>
               <Route exact path="/home" element={<StationsMap /> }></Route>
               <Route path="/home/stations" element={<Stations />}></Route>
               <Route path="/home/journeys" element={<Journeys />}></Route>
