@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:8080/api'
+const baseUrl = 'https://citybikes-backend.herokuapp.com/api'
 
 export const getJourneysPage = (pagination, sorting, columnFilters) => {
   const {pageIndex, pageSize} = pagination

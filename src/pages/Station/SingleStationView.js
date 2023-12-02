@@ -39,7 +39,7 @@ const SingleStationView = ({station, showDetailView, setShowDetailView, fetching
           <Typography sx={{ fontSize: 14, mb: 1.25 }}>
             {title}
           </Typography>
-          <Typography variant="h5" color="primary">
+          <Typography variant='h5' color='primary'>
             {value} {unit}
           </Typography>
         </CardContent>
@@ -93,7 +93,7 @@ const SingleStationView = ({station, showDetailView, setShowDetailView, fetching
               tickPadding: 5,
               format: tick => {
                 if (((tick.slice(-2) === '01' || tick.slice(-2) === '15') && tick.slice(-5) !== '08-01') || tick.slice(-5) === '07-31'){
-                  return new Date(Date.parse(tick)).toLocaleDateString("en-US", { month: 'short', day: 'numeric' })
+                  return new Date(Date.parse(tick)).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
                 }
                 else {
                   return ''
@@ -106,7 +106,7 @@ const SingleStationView = ({station, showDetailView, setShowDetailView, fetching
             }}
             axisTop={null}
             axisRight={null}
-            xFormat={ (x) => (<Typography sx={{ fontSize: 14 }}>Date: {new Date(Date.parse(x)).toLocaleDateString("en-US", { month: 'short', day: 'numeric' })}</Typography>)}
+            xFormat={ (x) => (<Typography sx={{ fontSize: 14 }}>Date: {new Date(Date.parse(x)).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</Typography>)}
             yFormat={ (y) => (<Typography sx={{ fontSize: 14 }}>Count: {y}</Typography>) }
             tooltip={({ point }) => {
               return (
@@ -120,10 +120,10 @@ const SingleStationView = ({station, showDetailView, setShowDetailView, fetching
             useMesh={true}
             enableGridX={false}
             theme={{
-              "axis": {
-                "ticks": {
-                  "text": {
-                    "fontSize": 14
+              'axis': {
+                'ticks': {
+                  'text': {
+                    'fontSize': 14
                   }
                 }
               }
@@ -136,7 +136,7 @@ const SingleStationView = ({station, showDetailView, setShowDetailView, fetching
   }
 
   const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="left" ref={ref} {...props} />
+    return <Slide direction='left' ref={ref} {...props} />
   })
 
   if (fetchingDetail || !station){
@@ -166,15 +166,15 @@ const SingleStationView = ({station, showDetailView, setShowDetailView, fetching
         sx={{ m: 0, p: 0 }}
       >
         <AppBar sx={{ position: 'relative' }}>
-          <Toolbar variant="dense">
-            <Typography sx={{ flex: 1 }} variant="h6" component="div">
+          <Toolbar variant='dense'>
+            <Typography sx={{ flex: 1 }} variant='h6' component='div'>
               <div>{station.name} ({station.address}, {station.city})</div>
             </Typography>
             <IconButton
-              edge="start"
-              color="inherit"
+              edge='start'
+              color='inherit'
               onClick={onClose}
-              aria-label="close"
+              aria-label='close'
             >
               <CloseIcon />
             </IconButton>
